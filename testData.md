@@ -1,31 +1,8 @@
 
-
-String : UserId;
-Date : ViewDate;
-String : ProductId;
-
-"userId": "334565",
-"viewDate": "00976",
-"productId": "556112"
+# Test Data
 
 
-
-
-db.getCollection('userView').find({})
-
-
-ISODate("1970-01-19T13:56:14.770Z"),
-
-b110782169ddc66f7669aa3bd6c0a3a276e2e979
-
-{
-    "userId": "444555",
-    "viewDate": "1970-01-19",
-    "productId": "3334455"
-}
-
-
-
+### Random UserIds
 3355100
 2890566
 6021187
@@ -37,7 +14,7 @@ b110782169ddc66f7669aa3bd6c0a3a276e2e979
 6315597
 4747286
 
-
+### Random dates between 1995-05-07 and 2019-10-24
 1995-05-07
 1995-12-24
 1996-04-22
@@ -64,6 +41,7 @@ b110782169ddc66f7669aa3bd6c0a3a276e2e979
 2018-07-05
 2019-10-24
 
+### Sample payloads
 {
     "userId": "3355100",
     "viewDate": "1995-05-07",

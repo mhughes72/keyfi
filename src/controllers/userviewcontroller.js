@@ -8,11 +8,22 @@ const db = mongoose.connection
 var moment = require('moment');
 const { ERR_STATUS, ERR_CODE } = require('../constants/constant')
 
+var fs = require('fs');
+var util = require('util');
+var log_file = fs.createWriteStream(__dirname + '/debug.log', {flags : 'w'});
+var log_stdout = process.stdout;
+
+console.log = function(d) { //
+  log_file.write(util.format(d) + '\n');
+  log_stdout.write(util.format(d) + '\n');
+};
 
 
+// EFFICIENCY STEPS
+// Using lean() to skip several conversion steps for speed.  Comes with several downsides
+// that may or may not be relevant depending on requirements
 const getTotalUsers = async function (req, res) {
-console.log('hey 1: ', req.body.startdate)
-console.log('hey 2: ', req.body.enddate)
+
     await UserView
         .find({ viewDate: { $gte: req.body.startdate, $lte: req.body.enddate } },
             function (err, result) {
@@ -21,13 +32,14 @@ console.log('hey 2: ', req.body.enddate)
                         error: err
                     });
                 } else {
+                    console.log(res)
                     res.json({
                         err_code: ERR_CODE.success,
                         userIds: result
                     });
                 }
             }
-        )
+        ).lean()
 
 }
 
@@ -41,13 +53,14 @@ const getUniqueUsers = async function (req, res) {
                         error: err
                     });
                 } else {
+                    console.log('RES: ', res)
                     res.json({
                         err_code: ERR_CODE.success,
                         userIds: result
                     });
                 }
             }
-        );
+        ).lean()
 }
 
 const getUserViews = async function (req, res) {
