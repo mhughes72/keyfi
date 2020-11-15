@@ -9,14 +9,11 @@ const userViewSchema = new Schema({
     },
 
     viewDate: { 
-
         type: Date
-        // default: Date.now 
     },
 
     productId: { 
         type: String, 
-
     }
 
 });
