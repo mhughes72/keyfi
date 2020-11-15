@@ -1,22 +1,6 @@
 
-// const {UserView} = require("../models/userView")
-
 const UserView = require("../models/userView")
-
-const mongoose = require("mongoose")
-const db = mongoose.connection
-var moment = require('moment');
 const { ERR_STATUS, ERR_CODE } = require('../constants/constant')
-
-var fs = require('fs');
-var util = require('util');
-var log_file = fs.createWriteStream(__dirname + '/debug.log', {flags : 'w'});
-var log_stdout = process.stdout;
-
-console.log = function(d) { //
-  log_file.write(util.format(d) + '\n');
-  log_stdout.write(util.format(d) + '\n');
-};
 
 
 // EFFICIENCY STEPS
@@ -24,6 +8,7 @@ console.log = function(d) { //
 // that may or may not be relevant depending on requirements
 const getTotalUsers = async function (req, res) {
 
+    // Return all documents between startdata and enddate
     await UserView
         .find({ viewDate: { $gte: req.body.startdate, $lte: req.body.enddate } },
             function (err, result) {
@@ -44,6 +29,8 @@ const getTotalUsers = async function (req, res) {
 }
 
 const getUniqueUsers = async function (req, res) {
+
+    // Return all documents with unique userIds between startdata and enddate
     await UserView
         .find({ viewDate: { $gte: req.body.startdate, $lte: req.body.enddate } })
         .distinct('userId',
@@ -65,6 +52,7 @@ const getUniqueUsers = async function (req, res) {
 
 const getUserViews = async function (req, res) {
 
+    // Return all documents
     try {
         const userViews = await UserView.find({})
         res.send(userViews)
@@ -74,10 +62,10 @@ const getUserViews = async function (req, res) {
 
 }
 
-
 const addUserViews = async function (req, res) {
-    const userView = new UserView(req.body)
 
+    // Add a documents
+    const userView = new UserView(req.body)
     try {
         await userView.save()
         res.status(201).send(userView)
@@ -85,10 +73,7 @@ const addUserViews = async function (req, res) {
         res.status(400).send(e)
     }
 
-
 }
-
-
 
 module.exports = {
     getUserViews,
